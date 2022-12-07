@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>2022卡塔尔世界杯娱乐单</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        table tr:nth-child(odd){
+            background: #ccc;
+        }
+        th{background-color:rgba(98, 185, 64, 0.438);}
+    </style>
+</head>
+<body>
+<form name="formOrder" method="post">
+    <div align="center">
+        <p>卡塔尔世界杯娱乐单</p>
+        <a href="/soccer/socceradmin">回主菜单</a>
+        <br>
+        <select style="width:120px;height:50px;font-size: 30px" id="orderName" name="orderName">
+            <option value="">所有人</option>
+            <option th:each="user:${data.userList}" th:value="${user.id}" th:text="${user.name}"
+                th:selected="${data.userName} == ${user.id}"
+            ></option>
+        </select>
+        <button name="orderStatus" value="2" style="width:100px;height:50px;font-size: 30px" formaction="/soccer/userorderlist">
+            查询
+        </button>
+        <input type="hidden" name="showFlag" th:value="${data.showFlag}">
+        <br><br>
+        <span th:if="${data.showFlag == '1'}">
+            <table style="border-collapse: collapse" border="1">
+                <tr>
+                    <th>订单号</th>
+                    <th>赛事阶段</th>
+                    <th>球队</th>
+                    <th>受让</th>
+                    <th>盘口</th>
+                    <th>赔率</th>
+                    <th>金额</th>
+                    <th>订单状态</th>
+                    <th>下单时间</th>
+                    <th>确认时间</th>
+                    <th>结果</th>
+                </tr>
+                <tr th:each="soccerOrder:${data.soccerOrderList}">
+                    <td th:text="${soccerOrder.orderId}"></td>
+                    <td th:text="${soccerOrder.stage}"></td>
+                    <td th:text="${soccerOrder.team}"></td>
+                    <td th:text="${soccerOrder.rs}"></td>
+                    <td th:text="${soccerOrder.handicap}"></td>
+                    <td align="right" th:text="${soccerOrder.odds}"></td>
+                    <td align="right" th:text="${soccerOrder.amount}"></td>
+                    <td th:text="${soccerOrder.statusName}"></td>
+                    <td th:text="${soccerOrder.orderTime}"></td>
+                    <td th:text="${soccerOrder.confirmTime}"></td>
+                    <td align="right" th:text="${soccerOrder.result}"></td>
+                </tr>
+                <tr>
+                    <td colspan="6"></td>
+                    <td align="right"><b th:text="${#aggregates.sum(data.soccerOrderList.![amount])}" /></td>
+                    <td colspan="3"></td>
+                    <td align="right"><b th:text="${#aggregates.sum(data.soccerOrderList.![result])}" /></td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="11">
+                        <button style="width:200px;height:100px;font-size: 20px" formaction="/soccer/finishorder">
+                            结账
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </span>
+    </div>
+</form>
+</body>
+</html>

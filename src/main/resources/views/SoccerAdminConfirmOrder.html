@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>订单详细</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript"  th:inline="javascript">
+	</script>
+
+</head>
+<body>
+<form name="formOrder" th:object="${wcOrderDetail}" method="post">
+    <div align="center">
+        <p>卡塔尔世界杯娱乐单</p>
+        <a href="/soccer/socceradmin">回主菜单</a>
+        <br>
+        <table>
+            <tr><td>订单号</td>
+                <td>
+                    <td algin="left" th:text="${wcOrderDetail.orderId}"></td>
+                    <input type="hidden" name="orderId" th:value="${wcOrderDetail.orderId}">
+                </td>
+            </tr>
+            <tr><td>姓名</td>
+                <td>
+                    <td algin="left" th:text="${wcOrderDetail.userName}"></td>
+                    <input type="hidden" name="name" th:value="${wcOrderDetail.name}">
+                </td>
+            </tr>
+            <tr><td>赛事阶段</td>
+                <td>
+                    <td algin="left" th:text="${wcOrderDetail.stageName}"></td>
+                    <input type="hidden" name="codeId" th:value="${wcOrderDetail.codeId}">
+                </td>
+            </tr>
+            <tr><td>国家</td>
+                <td th:text="${wcOrderDetail.team}"></td>
+            </tr>
+            <tr><td>让受</td>
+                <td th:text="${wcOrderDetail.rsName}"></td>
+            </tr>
+            <tr><td>盘口</td>
+                <td th:text="${wcOrderDetail.handicap}"></td>
+            </tr>
+            <tr><td>赔率</td>
+                <td>
+                    <input type="text" name="odds" th:value="${wcOrderDetail.odds}">
+                </td>
+            </tr>
+            <tr><td>金额</td>
+                <td algin="left" th:text="${wcOrderDetail.amount}"></td>
+            </tr>
+            <span th:if="${wcOrderDetail.status == '1'}">
+                <tr><td>结果</td>
+                    <td>
+                        <input type="text" name="result" th:value="${wcOrderDetail.result}">
+                    </td>
+                </tr>
+            </span>
+            <tr><td></td>
+                <td style="text-align:right">
+                    <span th:if="${wcOrderDetail.status == '0'}">
+                        <button name="confirm" value="1" style="width:200px;height:100px;font-size: 50px" formaction="/soccer/confirmorder">
+                            确认
+                        </button>
+                        <button name="confirm" value="1" style="width:200px;height:100px;font-size: 50px" formaction="/soccer/closeorder">
+                            关闭
+                        </button>
+                    </span>
+                    <span th:if="${wcOrderDetail.status == '1'}">
+                        <button name="pay" value="2" style="width:200px;height:100px;font-size: 50px" formaction="/soccer/payorder">
+                            结算
+                        </button>
+                    </span>
+                    <span th:if="${wcOrderDetail.status == '2'}">
+                        <button name="pay" value="3" style="width:200px;height:100px;font-size: 50px" formaction="/soccer/finishorder">
+                            结束
+                        </button>
+                    </span>
+                </td>
+            </tr>
+        </table>        
+    </div>
+</form>
+</body>
+</html>

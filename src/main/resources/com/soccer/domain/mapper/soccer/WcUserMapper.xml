@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soccer.domain.mapper.soccer.WcUserMapper">
+  <resultMap id="BaseResultMap" type="com.soccer.domain.soccer.WcUser">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="passwd" jdbcType="CHAR" property="passwd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, passwd
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from soccer.wc_user
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from soccer.wc_user
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.soccer.domain.soccer.WcUser">
+    insert into soccer.wc_user (id, name, passwd)
+    values (#{id,jdbcType=CHAR}, #{name,jdbcType=CHAR}, #{passwd,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.soccer.domain.soccer.WcUser">
+    insert into soccer.wc_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="passwd != null">
+        passwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="passwd != null">
+        #{passwd,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.soccer.domain.soccer.WcUser">
+    update soccer.wc_user
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=CHAR},
+      </if>
+      <if test="passwd != null">
+        passwd = #{passwd,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.soccer.domain.soccer.WcUser">
+    update soccer.wc_user
+    set name = #{name,jdbcType=CHAR},
+      passwd = #{passwd,jdbcType=CHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

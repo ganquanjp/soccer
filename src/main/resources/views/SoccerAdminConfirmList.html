@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>2022卡塔尔世界杯娱乐单</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        table tr:nth-child(odd){
+            background: #ccc;
+        }
+        th{background-color:rgba(98, 185, 64, 0.438);}
+    </style>
+    <script type="text/javascript"  th:inline="javascript">
+        function doSubmit(orderId){
+            var link = /*[[@{/confirmorder}]]*/
+            link = link + "?orderId=" + orderId;
+            location.href=link;
+        }
+	</script>
+</head>
+<body>
+    <form name="formOrder" th:object="${SoccerOrderBean}" method="post">
+    <div align="center">
+        <p>卡塔尔世界杯娱乐单</p>
+        <a href="/soccer/socceradmin">回主菜单</a>
+        <br>
+        <table style="border-collapse: collapse" border="1px">
+            <tr>
+                <th>订单号</th>
+                <th>赛事阶段</th>
+                <th>下单者</th>
+                <th>球队</th>
+                <th>受让</th>
+                <th>盘口</th>
+                <th>赔率</th>
+                <th>金额</th>
+                <th>结果</th>
+                <th>订单状态</th>
+                <th>下单时间</th>
+                <th></th>
+            </tr>
+            <tr th:each="soccerOrder:${soccerOrderList}">
+                <td th:text="${soccerOrder.orderId}"></td>
+                <td th:text="${soccerOrder.stage}"></td>
+                <td th:text="${soccerOrder.orderName}"></td>
+                <td th:text="${soccerOrder.team}"></td>
+                <td th:text="${soccerOrder.rs}"></td>
+                <td th:text="${soccerOrder.handicap}"></td>
+                <td align="right" th:text="${soccerOrder.odds}"></td>
+                <td align="right" th:text="${soccerOrder.amount}"></td>
+                <td align="right" th:text="${soccerOrder.result}"></td>
+                <td th:text="${soccerOrder.statusName}"></td>
+                <td th:text="${soccerOrder.orderTime}"></td>
+                <td>
+                    <span th:if="${soccerOrder.statusId == '0'}">
+                        <button name="orderId" th:value="${soccerOrder.orderId}" formaction="/soccer/orderdetail">
+                            确认
+                        </button>
+                    </span>
+                    <span th:if="${soccerOrder.statusId == '1'}">
+                        <button name="orderId" th:value="${soccerOrder.orderId}" formaction="/soccer/orderdetail">
+                            结算
+                        </button>
+                    </span>
+                    <span th:if="${soccerOrder.statusId == '2'}">
+                        <button name="orderId" th:value="${soccerOrder.orderId}" formaction="/soccer/orderdetail">
+                            结束
+                        </button>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soccer.domain.mapper.soccer.WcOrderMapper">
+  <resultMap id="BaseResultMap" type="com.soccer.domain.soccer.WcOrder">
+    <id column="order_id" jdbcType="CHAR" property="orderId" />
+    <result column="group_id" jdbcType="CHAR" property="groupId" />
+    <result column="code_id" jdbcType="CHAR" property="codeId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="team" jdbcType="CHAR" property="team" />
+    <result column="odds" jdbcType="NUMERIC" property="odds" />
+    <result column="amount" jdbcType="NUMERIC" property="amount" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="handicap" jdbcType="VARCHAR" property="handicap" />
+    <result column="rs" jdbcType="VARCHAR" property="rs" />
+    <result column="result" jdbcType="NUMERIC" property="result" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="confirm_time" jdbcType="TIMESTAMP" property="confirmTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, group_id, code_id, name, team, odds, amount, status, handicap, rs, result, 
+    order_time, confirm_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from soccer.wc_order
+    where order_id = #{orderId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from soccer.wc_order
+    where order_id = #{orderId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.soccer.domain.soccer.WcOrder">
+    <selectKey keyProperty="orderId" order="BEFORE" resultType="java.lang.String">
+      SELECT LPAD(CAST(CAST(MAX(ORDER_ID) AS INTEGER )+1 AS VARCHAR),5,'0') FROM WC_ORDER
+    </selectKey>
+    insert into soccer.wc_order (order_id, group_id, code_id, 
+      name, team, odds, amount, 
+      status, handicap, rs, 
+      result, order_time, confirm_time
+      )
+    values (#{orderId,jdbcType=CHAR}, #{groupId,jdbcType=CHAR}, #{codeId,jdbcType=CHAR}, 
+      #{name,jdbcType=CHAR}, #{team,jdbcType=CHAR}, #{odds,jdbcType=NUMERIC}, #{amount,jdbcType=NUMERIC}, 
+      #{status,jdbcType=CHAR}, #{handicap,jdbcType=VARCHAR}, #{rs,jdbcType=VARCHAR}, 
+      #{result,jdbcType=NUMERIC}, now(), null
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.soccer.domain.soccer.WcOrder">
+    insert into soccer.wc_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="codeId != null">
+        code_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="team != null">
+        team,
+      </if>
+      <if test="odds != null">
+        odds,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="handicap != null">
+        handicap,
+      </if>
+      <if test="rs != null">
+        rs,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="orderTime != null">
+        order_time,
+      </if>
+      <if test="confirmTime != null">
+        confirm_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=CHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=CHAR},
+      </if>
+      <if test="codeId != null">
+        #{codeId,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="team != null">
+        #{team,jdbcType=CHAR},
+      </if>
+      <if test="odds != null">
+        #{odds,jdbcType=NUMERIC},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=NUMERIC},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="handicap != null">
+        #{handicap,jdbcType=VARCHAR},
+      </if>
+      <if test="rs != null">
+        #{rs,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=NUMERIC},
+      </if>
+      <if test="orderTime != null">
+        #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmTime != null">
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.soccer.domain.soccer.WcOrder">
+    update soccer.wc_order
+    <set>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=CHAR},
+      </if>
+      <if test="codeId != null">
+        code_id = #{codeId,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=CHAR},
+      </if>
+      <if test="team != null">
+        team = #{team,jdbcType=CHAR},
+      </if>
+      <if test="odds != null">
+        odds = #{odds,jdbcType=NUMERIC},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=NUMERIC},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="handicap != null">
+        handicap = #{handicap,jdbcType=VARCHAR},
+      </if>
+      <if test="rs != null">
+        rs = #{rs,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=NUMERIC},
+      </if>
+      <if test="orderTime != null">
+        order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status == 1">
+        confirm_time = now()
+      </if>      
+    </set>
+    where order_id = #{orderId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.soccer.domain.soccer.WcOrder">
+    update soccer.wc_order
+    set group_id = #{groupId,jdbcType=CHAR},
+      code_id = #{codeId,jdbcType=CHAR},
+      name = #{name,jdbcType=CHAR},
+      team = #{team,jdbcType=CHAR},
+      odds = #{odds,jdbcType=NUMERIC},
+      amount = #{amount,jdbcType=NUMERIC},
+      status = #{status,jdbcType=CHAR},
+      handicap = #{handicap,jdbcType=VARCHAR},
+      rs = #{rs,jdbcType=VARCHAR},
+      result = #{result,jdbcType=NUMERIC},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP}
+    where order_id = #{orderId,jdbcType=CHAR}
+  </update>
+</mapper>

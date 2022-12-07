@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soccer.domain.mapper.soccer.custmapper.SoccerMapper">
+  <select id="selectAllOrders" parameterType="java.util.Map" resultType="com.soccer.bean.resultbean.SoccerOrderBean">
+    SELECT
+      WO.ORDER_ID     AS orderId
+    , CM1.CODE_NAME   AS STAGE
+    , WU.NAME         AS orderName
+    , WO.TEAM         
+    , CM3.CODE_NAME   AS RS
+    , WO.HANDICAP     
+    , WO.ODDS         
+    , WO.AMOUNT
+    , WO.STATUS       AS statusId
+    , CM2.CODE_NAME   AS statusName
+    , coalesce(WO.RESULT, 0) AS RESULT
+    , TO_CHAR(WO.ORDER_TIME, 'yyyy-MM-dd hh24:mi') AS orderTime
+    , TO_CHAR(WO.CONFIRM_TIME, 'yyyy-MM-dd hh24:mi') AS confirmTime      
+    FROM WC_ORDER WO
+    LEFT JOIN WC_USER WU ON (WU.ID=WO.NAME)
+    LEFT JOIN CODE_MST CM1 ON (CM1.GROUP_ID='001' AND CM1.CODE_ID=WO.CODE_ID)
+    LEFT JOIN CODE_MST CM2 ON (CM2.GROUP_ID='002' AND CM2.CODE_ID=WO.STATUS)
+    LEFT JOIN CODE_MST CM3 ON (CM3.GROUP_ID='003' AND CM3.CODE_ID=WO.RS)
+    <where> 1=1
+      <if test="orderName != ''">
+        <![CDATA[ AND WO.NAME = '${orderName}']]>
+      </if>
+      <if test="orderStatus != ''">
+        <![CDATA[ AND WO.STATUS='${orderStatus}']]>
+      </if>
+      <if test="stageId != ''">
+        <![CDATA[ AND WO.CODE_ID='${stageId}']]>
+      </if>
+    ORDER BY WO.ORDER_ID
+    </where>
+  </select>
+
+  <select id="selectAllUsers" parameterType="java.util.Map" resultType="com.soccer.domain.soccer.WcUser">
+    SELECT
+      ID     AS id
+    , NAME   AS name  
+    FROM WC_USER
+    ORDER BY ID
+  </select>
+
+  <select id="selectAllStages" parameterType="java.util.Map" resultType="com.soccer.domain.soccer.CodeMst">
+    SELECT
+      CODE_ID     AS codeId
+    , CODE_NAME   AS codeName  
+    FROM CODE_MST
+    WHERE GROUP_ID='001'
+    ORDER BY CODE_ID
+  </select>
+
+  <select id="selectAllStatus" parameterType="java.util.Map" resultType="com.soccer.domain.soccer.CodeMst">
+    SELECT
+      CODE_ID     AS codeId
+    , CODE_NAME   AS codeName  
+    FROM CODE_MST
+    WHERE GROUP_ID='002'
+    ORDER BY CODE_ID
+  </select>
+
+  <select id="selectAllRs" parameterType="java.util.Map" resultType="com.soccer.domain.soccer.CodeMst">
+    SELECT
+      CODE_ID     AS codeId
+    , CODE_NAME   AS codeName  
+    FROM CODE_MST
+    WHERE GROUP_ID='003'
+    ORDER BY CODE_ID
+  </select>
+
+  <update id="updateOrderFinished" parameterType="java.lang.String">
+    update soccer.wc_order set status = '3'
+    where status = '2' and name = #{orderName}
+  </update>
+</mapper>
